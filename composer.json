@@ -1,0 +1,12 @@
+{
+    "require": {
+        "qpdb/query-builder": "^1.0",
+        "qpdb/slim_application_di": "^0.0.1"
+    },
+    "autoload": {
+        "psr-4": {
+            "IB\\": "src/"
+        },
+        "files": ["config/bootstrap.php"]
+    }
+}
