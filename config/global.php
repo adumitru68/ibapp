@@ -1,5 +1,6 @@
 <?php
 
+use IB\Common\HelperIb;
 use Qpdb\SlimApplication\Router\RouterDetails;
 use Qpdb\SlimApplication\Router\RouterService;
 use Interop\Container\ContainerInterface;
@@ -82,6 +83,18 @@ return [
 		'routerType' => function() {
 			return RouterDetails::getInstance()->getRouterType();
 		},
+
+	],
+
+	'sessionCfg' => [
+		'name' => 'IB_7I1Z64C0KH',
+		'cookie' => [
+			'lifetime' => 0,
+			'path' => ini_get('session.cookie_path'),
+			'domain' => '.' . HelperIb::getServerName(),
+			'secure' => isset($_SERVER['HTTPS']),
+			'httponly' => true
+		],
 
 	]
 ];
