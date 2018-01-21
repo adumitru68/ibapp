@@ -9,8 +9,20 @@
 namespace IB\Common;
 
 
+use Firebase\JWT\JWT;
+
 class HelperIb
 {
+
+	/**
+	 * @var string
+	 */
+	private static $jwt_alg = 'HS256';
+
+	/**
+	 * @var string
+	 */
+	private static $jwt_key = 'hg0059';
 
 	/**
 	 * @return string
@@ -26,7 +38,7 @@ class HelperIb
 	 */
 	public static function htmlEntities( $string = '' )
 	{
-		return htmlentities( $string, ENT_COMPAT|ENT_HTML5, 'utf-8' );
+		return htmlentities( $string, ENT_COMPAT | ENT_HTML5, 'utf-8' );
 	}
 
 	/**
@@ -35,7 +47,21 @@ class HelperIb
 	 */
 	public static function htmlEntitiesDecode( $string = '' )
 	{
-		return html_entity_decode( $string, ENT_COMPAT|ENT_HTML5, 'utf-8' );
+		return html_entity_decode( $string, ENT_COMPAT | ENT_HTML5, 'utf-8' );
+	}
+
+	/**
+	 * @param array $arrayToJwt
+	 * @return string
+	 */
+	public static function JwtEncode( array $arrayToJwt )
+	{
+		return JWT::encode( $arrayToJwt, self::$jwt_key, self::$jwt_alg );
+	}
+
+	public static function JwtDecode( $jwtToArray )
+	{
+		return (array)JWT::decode( $jwtToArray, self::$jwt_key, array( self::$jwt_alg ) );
 	}
 
 }
