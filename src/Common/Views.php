@@ -6,7 +6,7 @@
  * Time: 9:10 PM
  */
 
-namespace IB\Core;
+namespace IB\Common;
 
 
 class Views

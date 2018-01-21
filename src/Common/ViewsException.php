@@ -6,7 +6,7 @@
  * Time: 9:47 PM
  */
 
-namespace IB\Core;
+namespace IB\Common;
 
 
 class ViewsException extends \Exception

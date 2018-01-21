@@ -39,54 +39,62 @@ final class SessionIb
 	 * SessionIb constructor.
 	 * @throws \Qpdb\SlimApplication\Config\ConfigException
 	 */
-	protected function __construct() {
-		$this->name = ConfigService::getInstance()->getProperty('sessionCfg.name');
-		$this->cookie = ConfigService::getInstance()->getProperty('sessionCfg.cookie');
+	protected function __construct()
+	{
+		$this->name = ConfigService::getInstance()->getProperty( 'sessionCfg.name' );
+		$this->cookie = ConfigService::getInstance()->getProperty( 'sessionCfg.cookie' );
 		$this->setup();
 	}
 
 
 	/**
 	 * @return SessionIb
+	 * @throws SessionIbException
 	 */
-	public static function getInstance() {
-		if (null === self::$instance) {
+	public static function getInstance()
+	{
+		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
-		//self::$instance->start();
-		if (self::$instance->isStarted && !self::$instance->isFingerprint()) {
+		if ( self::$instance->isStarted && !self::$instance->isFingerprint() ) {
 			self::$instance->forget();
-			die('Session denied acces !');
+			throw new SessionIbException( 'Fingerprint violation', 1 );
 		}
+
 		return self::$instance;
 	}
 
-	private function setup() {
-		ini_set('session.use_cookies', 1);
-		ini_set('session.use_only_cookies', 1);
-		session_name(ConfigService::getInstance()->getProperty('sessionCfg.name'));
+	private function setup()
+	{
+		ini_set( 'session.use_cookies', 1 );
+		ini_set( 'session.use_only_cookies', 1 );
+		session_name( ConfigService::getInstance()->getProperty( 'sessionCfg.name' ) );
 		session_set_cookie_params(
-			$this->cookie['lifetime'],
-			$this->cookie['path'],
-			$this->cookie['domain'],
-			$this->cookie['secure'],
-			$this->cookie['httponly']
+			$this->cookie[ 'lifetime' ],
+			$this->cookie[ 'path' ],
+			$this->cookie[ 'domain' ],
+			$this->cookie[ 'secure' ],
+			$this->cookie[ 'httponly' ]
 		);
 	}
 
-	public function start() {
-		if (session_id() === '') {
-			if (session_start()) {
-				return mt_rand(0, 4) === 0 ? $this->refresh() : true; // 1/5
+	public function start()
+	{
+		if ( session_id() === '' ) {
+			if ( session_start() ) {
+				return mt_rand( 0, 4 ) === 0 ? $this->refresh() : true; // 1/5
 			}
 		}
+
 		return false;
 	}
 
-	public function forget() {
+	public function forget()
+	{
 
-		if (session_id() === '') {
+		if ( session_id() === '' ) {
 			$this->clearCookie();
+
 			return false;
 		}
 		$_SESSION = [];
@@ -101,28 +109,30 @@ final class SessionIb
 			$this->name,
 			'',
 			time() - 42000,
-			$this->cookie['path'],
-			$this->cookie['domain'],
-			$this->cookie['secure'],
-			$this->cookie['httponly']
+			$this->cookie[ 'path' ],
+			$this->cookie[ 'domain' ],
+			$this->cookie[ 'secure' ],
+			$this->cookie[ 'httponly' ]
 		);
 	}
 
-	public function refresh() {
-		return session_regenerate_id(true);
+	public function refresh()
+	{
+		return session_regenerate_id( true );
 	}
 
-	public function isFingerprint() {
+	public function isFingerprint()
+	{
 		$hash = md5(
-			$_SERVER['HTTP_USER_AGENT'] .
-			(ip2long($_SERVER['REMOTE_ADDR']) & ip2long('255.255.0.0'))
+			$_SERVER[ 'HTTP_USER_AGENT' ] .
+			( ip2long( $_SERVER[ 'REMOTE_ADDR' ] ) & ip2long( '255.255.0.0' ) )
 		);
 
-		if (isset($_SESSION['_fingerprint'])) {
-			return $_SESSION['_fingerprint'] === $hash;
+		if ( isset( $_SESSION[ '_fingerprint' ] ) ) {
+			return $_SESSION[ '_fingerprint' ] === $hash;
 		}
 
-		$_SESSION['_fingerprint'] = $hash;
+		$_SESSION[ '_fingerprint' ] = $hash;
 
 		return true;
 	}
@@ -132,19 +142,22 @@ final class SessionIb
 	 * @param null $default_value
 	 * @return null
 	 */
-	public function get($name, $default_value = null) {
-		$parsed = explode('.', $name);
+	public function get( $name, $default_value = null )
+	{
+		$parsed = explode( '.', $name );
 		$result = $_SESSION;
 
-		while ($parsed) {
-			$next = array_shift($parsed);
+		while ( $parsed ) {
+			$next = array_shift( $parsed );
 
-			if (isset($result[$next])) {
-				$result = $result[$next];
-			} else {
-				if (isset($default_value)) {
-					$this->put($name, $default_value);
+			if ( isset( $result[ $next ] ) ) {
+				$result = $result[ $next ];
+			}
+			else {
+				if ( isset( $default_value ) ) {
+					$this->put( $name, $default_value );
 				}
+
 				return $default_value;
 			}
 		}
@@ -156,21 +169,22 @@ final class SessionIb
 	 * @param $name
 	 * @param $value
 	 */
-	public function put($name, $value) {
-		$parsed = explode('.', $name);
+	public function put( $name, $value )
+	{
+		$parsed = explode( '.', $name );
 
-		$session = & $_SESSION;
+		$session = &$_SESSION;
 
-		while (count($parsed) > 1) {
-			$next = array_shift($parsed);
+		while ( count( $parsed ) > 1 ) {
+			$next = array_shift( $parsed );
 
-			if (!isset($session[$next]) || !is_array($session[$next])) {
-				$session[$next] = [];
+			if ( !isset( $session[ $next ] ) || !is_array( $session[ $next ] ) ) {
+				$session[ $next ] = [];
 			}
-			$session = & $session[$next];
+			$session = &$session[ $next ];
 		}
 
-		$session[array_shift($parsed)] = $value;
+		$session[ array_shift( $parsed ) ] = $value;
 	}
 
 
