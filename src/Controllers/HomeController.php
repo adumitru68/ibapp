@@ -29,7 +29,7 @@ class HomeController implements ControllerInterface
 	{
 		// TODO: Implement indexAction() method.
 
-		$content = Views::loadView('common/page.php', ['test'=>'val test']);
+		$content = Views::loadView('admin.php', ['testVal'=>'bla bla']);
 
 		$response->getBody()->write( $content );
 

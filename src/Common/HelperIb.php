@@ -59,9 +59,32 @@ class HelperIb
 		return JWT::encode( $arrayToJwt, self::$jwt_key, self::$jwt_alg );
 	}
 
+	/**
+	 * @param $jwtToArray
+	 * @return array
+	 */
 	public static function JwtDecode( $jwtToArray )
 	{
 		return (array)JWT::decode( $jwtToArray, self::$jwt_key, array( self::$jwt_alg ) );
+	}
+
+	/**
+	 * @param $password
+	 * @return bool|string
+	 */
+	public static function passwordHash( $password )
+	{
+		return password_hash( $password, PASSWORD_DEFAULT );
+	}
+
+	/**
+	 * @param string password
+	 * @param string $hash
+	 * @return bool
+	 */
+	public static function PasswordVerify( $password, $hash )
+	{
+		return password_verify( $password, $hash );
 	}
 
 }
