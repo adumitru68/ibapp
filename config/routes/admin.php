@@ -1,11 +1,13 @@
 <?php
 
-use Qpdb\SlimApplication\Controllers\CategoriesController;
+use IB\Controllers\HomeController;
+use IB\Controllers\RegisterController;
+use Interop\Container\ContainerInterface;
 use Slim\App;
 
-function loadRoutes( App $app )
-{
+return function( App $app, ContainerInterface $container ) {
 
-	$app->get( '/categs/{name:[a-z0-9A-Z_-]+}/[{page:[0-9]+}/]', CategoriesController::class . ':indexAction' );
 
-}
+
+
+};
