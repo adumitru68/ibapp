@@ -27,10 +27,7 @@ class HomeController implements ControllerInterface
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
-		// TODO: Implement indexAction() method.
-
 		$content = Views::loadView('admin.php', ['testVal'=>'bla bla']);
-
 		$response->getBody()->write( $content );
 
 		return $response;
