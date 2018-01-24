@@ -87,4 +87,15 @@ class HelperIb
 		return password_verify( $password, $hash );
 	}
 
+	/**
+	 * @param $date
+	 * @param string $format
+	 * @return bool
+	 */
+	public static function validateDate( $date, $format = 'Y-m-d' )
+	{
+		$d = \DateTime::createFromFormat( $format, $date );
+		return $d && $d->format( $format ) == $date;
+	}
+
 }
