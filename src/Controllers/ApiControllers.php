@@ -9,6 +9,7 @@
 namespace IB\Controllers;
 
 
+use Qpdb\QueryBuilder\DB\DbService;
 use Qpdb\QueryBuilder\QueryBuild;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -47,10 +48,16 @@ class ApiControllers
 	public function citiesAction ( Request $request, Response $response, array $args = [] )
 	{
 
+		$sql = "select cities.id, cities.name as text from cities 
+				inner join states on cities.state_id = states.id
+				inner join countries on states.country_id = countries.id
+				where countries.id=?";
 
 		$content = [
-			'results'=> QueryBuild::select('states')->fields('id, name as text')->whereEqual('country_id', $args['country'])->execute()
+			'results'=> DbService::getInstance()->query($sql, [$args['country']])
 		];
+
+		//var_dump($content);
 
 		$response = (new Response())->withJson($content);
 

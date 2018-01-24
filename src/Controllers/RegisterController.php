@@ -36,10 +36,11 @@ class RegisterController implements ControllerInterface
 		$this->page = new PageGenerator();
 
 		if ( $request->getMethod() == SlimAppConst::METHOD_POST ) {
-			$this->saveUser( $request->getParsedBody() );
+			$this->processedForm( $request->getParsedBody() );
 			$loadDocument = false;
-		} else {
-			$this->createContent();
+		}
+		else {
+			$this->drawContent();
 			$loadDocument = true;
 		}
 
@@ -48,23 +49,30 @@ class RegisterController implements ControllerInterface
 		return $response;
 	}
 
-	private function createContent()
+	private function drawContent()
 	{
 		$content =
 			( new HtmlDiv() )
 				->withClass( 'container' )
-				->withStyle( 'max-width', '500px' )
+				->withStyle( 'max-width', '600px' )
 				->withStyle( 'margin-top', '30px' )
-				->withViewContent( 'pages/register.php', [] );
+				->withViewContent( 'pages/register2.php', [] )
+				->withHtmlElement(
+					(new HtmlDiv())
+						->withId('result_submit')
+						->withClass('row')
+				);
 
 		$this->page
 			->withContent( $content )
+			->withCssFile( '/css/custom.css' )
 			->withJsFile( '/js/register.js' );
 	}
 
-	private function saveUser( array $data )
+	private function processedForm( array $data )
 	{
-		//TODO implement
+		//var_dump($data);
+		$this->page->withContent("<script>$('#xemail').addClass('is-invalid')</script>");
 	}
 
 	private function validateData( array $data )

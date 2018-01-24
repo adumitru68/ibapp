@@ -30,6 +30,11 @@ class PageGenerator
 	 */
 	protected $pageContent = [];
 
+	/**
+	 * @var string
+	 */
+	protected $pageTitle;
+
 
 	/**
 	 * @param string $filePath
@@ -61,10 +66,21 @@ class PageGenerator
 		return $this;
 	}
 
+	/**
+	 * @param string $pageTitle
+	 * @return $this
+	 */
+	public function withPageTitle( $pageTitle )
+	{
+		$this->pageTitle = $pageTitle;
+		return $this;
+	}
+
 
 	/**
 	 * @param bool $withDocument
 	 * @return string
+	 * @throws \IB\Common\ViewsException
 	 */
 	public function getMarkupContent( $withDocument = true)
 	{
