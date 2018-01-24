@@ -9,8 +9,7 @@
 namespace IB\Controllers;
 
 
-use Qpdb\QueryBuilder\DB\DbService;
-use Qpdb\QueryBuilder\QueryBuild;
+use IB\Modules\Locations\LocationService;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -29,12 +28,11 @@ class ApiControllers
 	{
 
 		$content = [
-			'results'=> QueryBuild::select('countries')->fields('id, name as text')->execute()
+			'results' => LocationService::getInstance()->getCountries()
 		];
 
-		$response = (new Response())->withJson($content);
+		return ( new Response() )->withJson( $content );
 
-		return $response;
 	}
 
 
@@ -45,28 +43,14 @@ class ApiControllers
 	 * @return Response|static
 	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
 	 */
-	public function citiesAction ( Request $request, Response $response, array $args = [] )
+	public function citiesAction( Request $request, Response $response, array $args = [] )
 	{
-
-		$sql = "select cities.id, cities.name as text from cities 
-				inner join states on cities.state_id = states.id
-				inner join countries on states.country_id = countries.id
-				where countries.id=?";
 
 		$content = [
-			'results'=> DbService::getInstance()->query($sql, [$args['country']])
+			'results' => LocationService::getInstance()->getCitiesByCountryId( $args[ 'country' ] )
 		];
 
-		//var_dump($content);
-
-		$response = (new Response())->withJson($content);
-
-		return $response;
-
-	}
-
-	private function makeDataForSelect2( array $itemsArray = [], $withPagination = false )
-	{
+		return ( new Response() )->withJson( $content );
 
 	}
 

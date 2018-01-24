@@ -13,21 +13,3 @@ use Qpdb\SlimApplication\SlimApplicationDI;
 include_once __DIR__ . '/../vendor/autoload.php';
 
 SlimApplicationDI::routerService()->run();
-
-//var_dump(\IB\Modules\Users\UserService::getInstance()->getUserById(1));
-
-$html = (new HtmlDiv())
-	->withClass('ana','are','mere')
-	->withId('bbb')
-	->withHtmlElement(
-		(new HtmlDiv())
-			->withId('ggg')
-	)
-	->withContent("<span>gdgdgd</span>")
-	->withHtmlElement(
-		(new \IB\Html\HtmlNav())
-			->withClass('test')
-	)
-	->getHTMLMarkup();
-
-//var_dump($html);
