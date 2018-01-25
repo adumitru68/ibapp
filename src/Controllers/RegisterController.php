@@ -19,7 +19,6 @@ use IB\Modules\Validation\DataValidation;
 use IB\Modules\Validation\FormValidator;
 use Qpdb\QueryBuilder\DB\DbConnect;
 use Qpdb\QueryBuilder\DB\DbService;
-use Qpdb\QueryBuilder\QueryBuild;
 use Qpdb\SlimApplication\Utils\SlimAppConst;
 use Slim\Http\Request;
 use Slim\Http\Response;
@@ -115,7 +114,7 @@ class RegisterController implements ControllerInterface
 				'user_admin' => 0,
 			]
 		);
-		QueryBuild::update('users')->setField('user_token', $jwt)->whereEqual('user_id',$lastId)->limit(1)->execute();
+		UserService::getInstance()->updateUserById($lastId, ['user_token' => $jwt]);
 	}
 
 	private function prepareFormData()
@@ -169,6 +168,10 @@ class RegisterController implements ControllerInterface
 			->withFieldValidation(
 				'user_street',
 				( new DataValidation( $data[ 'user_street' ] ) )
+			)
+			->withFieldValidation(
+				'user_bio',
+				( new DataValidation( $data[ 'user_bio' ] ) )
 			);
 
 	}

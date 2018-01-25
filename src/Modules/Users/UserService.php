@@ -28,7 +28,9 @@ class UserService
 	/**
 	 * UserService constructor.
 	 */
-	protected function __construct(){}
+	protected function __construct()
+	{
+	}
 
 	/**
 	 * @return int
@@ -36,7 +38,7 @@ class UserService
 	 */
 	public function isLogged()
 	{
-		return SessionIb::getInstance()->get('user.id', 0);
+		return SessionIb::getInstance()->get( 'user.id', 0 );
 	}
 
 	/**
@@ -45,10 +47,21 @@ class UserService
 	 */
 	public function isAdmin()
 	{
-		if(!$this->isLogged())
+		if ( !$this->isLogged() )
 			return 0;
 
 		return 0;
+	}
+
+	/**
+	 * @param $user_id
+	 * @param array $updates
+	 * @return int|null
+	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
+	 */
+	public function updateUserById( $user_id, array $updates )
+	{
+		return UserServiceDao::getInstance()->updateUserById( $user_id, $updates );
 	}
 
 	public function login( $userEmail, $userPass )
@@ -56,7 +69,7 @@ class UserService
 
 	}
 
-	public function register ( array $newUser )
+	public function register( array $newUser )
 	{
 
 	}
@@ -71,7 +84,7 @@ class UserService
 	{
 		$user = UserServiceDao::getInstance()->getUserById( $id );
 
-		if(!$user)
+		if ( !$user )
 			return null;
 
 		if ( $asModel )
@@ -90,7 +103,7 @@ class UserService
 	{
 		$user = UserServiceDao::getInstance()->getUserByEmail( $email );
 
-		if(!$user)
+		if ( !$user )
 			return null;
 
 		if ( $asModel )
@@ -105,7 +118,7 @@ class UserService
 	 */
 	public function createUser( array $userData )
 	{
-		return UserServiceDao::getInstance()->createUser($userData);
+		return UserServiceDao::getInstance()->createUser( $userData );
 	}
 
 	/**

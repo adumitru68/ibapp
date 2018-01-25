@@ -91,6 +91,13 @@
             </div>
         </div>
 
+        <div class="form-group row">
+            <label for="user_bio" class="col-sm-2 col-form-label col-form-label-sm">Bio</label>
+            <div class="col-sm-10">
+                <textarea id="user_bio" name="user_bio" class="form-control form-control-sm" placeholder="Your adress"></textarea>
+            </div>
+        </div>
+
         <div class="form-group row justify-content-end">
             <div class="col-sm-10">
                 <button type="submit" class="btn btn-primary btn-sm float-sm-left my-2">Submit</button>

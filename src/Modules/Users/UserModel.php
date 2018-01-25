@@ -17,7 +17,7 @@ class UserModel
 		$this->id = (int)$daoRow['user_id'];
 		$this->email = (string)$daoRow[ 'user_email' ];
 		$this->fullName = (string)$daoRow['user_name'];
-		$this->profession = (string)$daoRow['user_prof'];
+		$this->token = $daoRow['user_token'];
 	}
 
 }
