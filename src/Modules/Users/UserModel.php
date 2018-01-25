@@ -12,12 +12,9 @@ namespace IB\Modules\Users;
 class UserModel
 {
 
-	private $daoRow;
-
-
 	public function __construct( array $daoRow )
 	{
-		$this->daoRow = $daoRow;
+		$this->id = (int)$daoRow['user_id'];
 		$this->email = (string)$daoRow[ 'user_email' ];
 		$this->fullName = (string)$daoRow['user_name'];
 		$this->profession = (string)$daoRow['user_prof'];

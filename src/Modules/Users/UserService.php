@@ -99,9 +99,13 @@ class UserService
 		return $user;
 	}
 
-	public function makeAdmin( $userId )
+	/**
+	 * @param array $userData
+	 * @return array|int|null
+	 */
+	public function createUser( array $userData )
 	{
-
+		return UserServiceDao::getInstance()->createUser($userData);
 	}
 
 	/**

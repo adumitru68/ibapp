@@ -43,6 +43,7 @@ class PageGenerator
 	public function withCssFile( $filePath )
 	{
 		$this->pageCss[] = $filePath;
+
 		return $this;
 	}
 
@@ -53,6 +54,7 @@ class PageGenerator
 	public function withJsFile( $filePath )
 	{
 		$this->pageJs[] = $filePath;
+
 		return $this;
 	}
 
@@ -60,9 +62,10 @@ class PageGenerator
 	 * @param string $htmlContent
 	 * @return $this
 	 */
-	public function withContent ( $htmlContent = '')
+	public function withContent( $htmlContent = '' )
 	{
 		$this->pageContent[] = $htmlContent;
+
 		return $this;
 	}
 
@@ -73,6 +76,7 @@ class PageGenerator
 	public function withPageTitle( $pageTitle )
 	{
 		$this->pageTitle = $pageTitle;
+
 		return $this;
 	}
 
@@ -82,7 +86,7 @@ class PageGenerator
 	 * @return string
 	 * @throws \IB\Common\ViewsException
 	 */
-	public function getMarkupContent( $withDocument = true)
+	public function getMarkupContent( $withDocument = true )
 	{
 		$markup = '';
 
@@ -90,8 +94,8 @@ class PageGenerator
 			$markup .= "<link href=\"$fileCss\" rel=\"stylesheet\" />";
 		}
 
-		foreach ($this->pageContent as $content ) {
-			if( $content instanceof HtmlElementInterface )
+		foreach ( $this->pageContent as $content ) {
+			if ( $content instanceof HtmlElementInterface )
 				$markup .= $content->getHTMLMarkup();
 			else
 				$markup .= $content;
@@ -101,8 +105,8 @@ class PageGenerator
 			$markup .= "<script language=\"JavaScript\" src=\"$fileJs\" type=\"text/javascript\"></script>";
 		}
 
-		if($withDocument)
-			$markup = Views::loadView('document.php',['markup'=>$markup, 'pageTitle'=>'Register form']);
+		if ( $withDocument )
+			$markup = Views::loadView( 'document.php', [ 'markup' => $markup, 'pageTitle' => $this->pageTitle ] );
 
 		return $markup;
 	}

@@ -95,7 +95,28 @@ class HelperIb
 	public static function validateDate( $date, $format = 'Y-m-d' )
 	{
 		$d = \DateTime::createFromFormat( $format, $date );
+
 		return $d && $d->format( $format ) == $date;
 	}
+
+	/**
+	 * @param $password
+	 * @param $passwordRe
+	 * @return bool
+	 */
+	public static function passwordEqual( $password, $passwordRe )
+	{
+		$password = trim( $password );
+		$passwordRe = trim( $passwordRe );
+
+		if ( empty( $password ) || empty( $passwordRe ) )
+			return false;
+
+		if ( $password == $passwordRe )
+			return true;
+
+		return false;
+	}
+
 
 }

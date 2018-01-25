@@ -11,13 +11,48 @@ var registerService = (function () {
 		});
 	}
 
-	function submitForm() {
+	function changeWindowUrl(){
+		var url = '/login/';
+		history.pushState('', '', url);
+	}
 
+
+	function markErrors( errors ) {
+
+		$(".form-control").removeClass("is-invalid");
+		var dataObject = JSON.parse(errors);
+
+		if(countProperties(dataObject)===0) {
+			$('#congratulations_block').slideDown();
+			$('#register_div').hide();
+			changeWindowUrl();
+			$(this).delay(10000).queue(function() {
+				window.location.href = '/login/';
+				$(this).dequeue();
+
+			});
+		}
+
+		for (var prop in dataObject) {
+			var el = jQuery('#'+prop);
+			el.addClass('is-invalid');
+			el.addClass('is-invalid').parent().find('.invalid-feedback').html(dataObject[prop]);
+		}
+	}
+
+	function countProperties(obj) {
+		var count = 0;
+		for(var prop in obj) {
+			if(obj.hasOwnProperty(prop))
+				++count;
+		}
+		return count;
 	}
 
 	return {
 		'loadOptions': loadSelect2Data,
-		'submitForm': submitForm
+		'countProperties': countProperties,
+		'markErrors':markErrors
 	};
 
 })();
@@ -26,6 +61,8 @@ var registerService = (function () {
 $( document ).ready(function() {
 
 	registerService.loadOptions('user_country', '/api/location/countries/');
+
+	$('#user_city').select2();
 
 	$( "#user_country" ).change(function() {
 		$('#user_city')
@@ -42,8 +79,8 @@ $( document ).ready(function() {
 			url: url,
 			data: $("#register_form").serialize(),
 			success: function(data) {
-				$('#result_submit').html( data );
-				console.log(data);
+				//$('#result_submit').html( data );
+				registerService.markErrors(data);
 			}
 		});
 		e.preventDefault();

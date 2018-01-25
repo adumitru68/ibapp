@@ -41,7 +41,8 @@ class DataValidation
 	 */
 	public function __construct( $value )
 	{
-		$this->dataValue = $value;
+		$this->dataValue = trim($value);
+		$this->errorCollector[] = $this->dataValue;
 	}
 
 	/**
@@ -49,7 +50,7 @@ class DataValidation
 	 */
 	public function isValid()
 	{
-		if(count($this->errorCollector))
+		if(count($this->errorCollector) > 1)
 			return false;
 
 		return true;
@@ -58,7 +59,7 @@ class DataValidation
 	/**
 	 * @return array
 	 */
-	public function getErrors()
+	public function getErrorsCollector()
 	{
 		return $this->errorCollector;
 	}
@@ -68,15 +69,12 @@ class DataValidation
 	 * @param string $errorMessage
 	 * @return $this
 	 */
-	public function Email( $errorMessage = "Invalid email" )
+	public function isEmail( $errorMessage = "Invalid email" )
 	{
 		$data = strval( $this->dataValue );
 
-		if ( empty( $data ) )
-			return $this;
-
 		if ( !filter_var( $data, FILTER_VALIDATE_EMAIL ) )
-			$this->errorCollector[ self::EMAIL ] = $errorMessage;
+			$this->errorCollector[] = $errorMessage;
 
 		return $this;
 	}
@@ -86,15 +84,12 @@ class DataValidation
 	 * @param string $errorMessage
 	 * @return $this
 	 */
-	public function Date( $format = 'Y-m-d', $errorMessage = "Invalid date" )
+	public function isDate( $format = 'Y-m-d', $errorMessage = "Invalid date" )
 	{
 		$date = strval( $this->dataValue );
 
-		if ( empty( $date ) )
-			return $this;
-
 		if ( !HelperIb::validateDate( $date, $format ) )
-			$this->errorCollector[ self::DATE ] = $errorMessage;
+			$this->errorCollector[] = $errorMessage;
 
 		return $this;
 	}
@@ -109,7 +104,7 @@ class DataValidation
 		$data = strval( $this->dataValue );
 
 		if(empty($data))
-			$this->errorCollector[self::NOT_EMPTY] = $errorMessage;
+			$this->errorCollector[] = $errorMessage;
 
 		return $this;
 	}
@@ -118,10 +113,36 @@ class DataValidation
 	 * @param string $errorMessage
 	 * @return $this
 	 */
-	public function numeric( $errorMessage = "Not is numeric" )
+	public function isNumeric( $errorMessage = "Not is numeric" )
 	{
 		if(!is_numeric($this->dataValue))
-			$this->errorCollector[self::NUMERIC] = $errorMessage;
+			$this->errorCollector[] = $errorMessage;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $password
+	 * @param string|null $password_re
+	 * @param string $errorMessage
+	 * @return $this
+	 */
+	public function isValidPassword( $password_re = null, $errorMessage = "Invalid password" )
+	{
+		if(!HelperIb::passwordEqual($this->dataValue, $password_re))
+			$this->errorCollector[] = $errorMessage;
+
+		return $this;
+	}
+
+	/**
+	 * @param string $errorMessage
+	 * @return $this
+	 */
+	public function notZero( $errorMessage = "Not is numeric" )
+	{
+		if($this->dataValue == '0')
+			$this->errorCollector[] = $errorMessage;
 
 		return $this;
 	}

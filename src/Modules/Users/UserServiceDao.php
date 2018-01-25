@@ -28,7 +28,7 @@ class UserServiceDao
 	public function getUserById( $id )
 	{
 		return QueryBuild::select( 'users' )
-			->fields('users.*, TIMESTAMPDIFF(YEAR, user_dob, CURDATE()) AS user_age')
+			->fields( 'users.*, TIMESTAMPDIFF(YEAR, user_dob, CURDATE()) AS user_age' )
 			->whereEqual( 'user_id', (int)$id )
 			->first()
 			->execute();
@@ -42,9 +42,21 @@ class UserServiceDao
 	public function getUserByEmail( $email )
 	{
 		return QueryBuild::select( 'users' )
-			->fields('users.*, TIMESTAMPDIFF(YEAR, user_dob, CURDATE()) AS user_age')
+			->fields( 'users.*, TIMESTAMPDIFF(YEAR, user_dob, CURDATE()) AS user_age' )
 			->whereEqual( 'user_id', $email )
 			->first()
+			->execute();
+	}
+
+	/**
+	 * @param array $userData
+	 * @return array|int|null
+	 */
+	public function createUser( array $userData )
+	{
+		return QueryBuild::insert( 'users' )
+			->ignore()
+			->setFieldsByArray( $userData )
 			->execute();
 	}
 
