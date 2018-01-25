@@ -2,7 +2,7 @@ var registerService = (function () {
 
 
 	function loadSelect2Data(select2Id, apiUrl) {
-		var element = jQuery('#'+select2Id);
+		var element = $('#'+select2Id);
 		element.undelegate('select2');
 		$.post( apiUrl, function(data) {
 			element.select2({
@@ -10,6 +10,7 @@ var registerService = (function () {
 			});
 		});
 	}
+
 
 	function changeWindowUrl(){
 		var url = '/login/';
@@ -34,7 +35,7 @@ var registerService = (function () {
 		}
 
 		for (var prop in dataObject) {
-			var el = jQuery('#'+prop);
+			var el = $('#'+prop);
 			el.addClass('is-invalid');
 			el.addClass('is-invalid').parent().find('.invalid-feedback').html(dataObject[prop]);
 		}

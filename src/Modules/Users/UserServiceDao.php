@@ -75,6 +75,20 @@ class UserServiceDao
 	}
 
 	/**
+	 * @param $user_email
+	 * @param array $updates
+	 * @return int|null
+	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
+	 */
+	public function updateUserByEmail( $user_email, array $updates )
+	{
+		return QueryBuild::update( 'users' )
+			->setFieldsByArray( $updates )
+			->whereEqual( 'user_email', $user_email )
+			->execute();
+	}
+
+	/**
 	 * @return UserServiceDao
 	 */
 	public static function getInstance()

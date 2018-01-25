@@ -42,18 +42,6 @@ class UserService
 	}
 
 	/**
-	 * @return int
-	 * @throws \IB\Common\SessionIbException
-	 */
-	public function isAdmin()
-	{
-		if ( !$this->isLogged() )
-			return 0;
-
-		return 0;
-	}
-
-	/**
 	 * @param $user_id
 	 * @param array $updates
 	 * @return int|null
@@ -62,16 +50,6 @@ class UserService
 	public function updateUserById( $user_id, array $updates )
 	{
 		return UserServiceDao::getInstance()->updateUserById( $user_id, $updates );
-	}
-
-	public function login( $userEmail, $userPass )
-	{
-
-	}
-
-	public function register( array $newUser )
-	{
-
 	}
 
 	/**
