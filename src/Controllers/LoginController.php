@@ -70,6 +70,20 @@ class LoginController implements ControllerInterface
 
 
 	/**
+	 * @param Request $request
+	 * @param Response $response
+	 * @param array $args
+	 * @return Response
+	 * @throws \IB\Common\SessionIbException
+	 */
+	public function LogOut ( Request $request, Response $response, array $args = [] )
+	{
+		SessionIb::getInstance()->forget();
+		return $response->withRedirect( '/' );
+	}
+
+
+	/**
 	 * @param array $data
 	 * @throws \IB\Common\ViewsException
 	 */
