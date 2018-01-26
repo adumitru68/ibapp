@@ -14,6 +14,7 @@ use IB\Common\ViewsException;
 use IB\Controllers\Interfaces\ControllerInterface;
 use IB\Html\HtmlDiv;
 use IB\Modules\Pages\PageGenerator;
+use IB\Modules\Users\UserContext;
 use IB\Modules\Users\UserService;
 use IB\Modules\Validation\DataValidation;
 use IB\Modules\Validation\FormValidator;
@@ -52,9 +53,14 @@ class RegisterController implements ControllerInterface
 	 * @param array $args
 	 * @return int|Response
 	 * @throws ViewsException
+	 * @throws \IB\Common\SessionIbException
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
+
+		if ( UserContext::isUser() ) {
+			return $response->withRedirect( '/' );
+		}
 
 		if ( $request->getMethod() == SlimAppConst::METHOD_POST ) {
 			$this->formValidator = new FormValidator();

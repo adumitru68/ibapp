@@ -9,13 +9,17 @@
 namespace IB\Controllers\Middleware;
 
 
+use IB\Modules\Users\UserContext;
 use Qpdb\SlimApplication\Middleware\Middleware;
+use Slim\Http\Response;
 
 class AdminMiddleware extends Middleware
 {
 
 	protected function before()
 	{
-		// TODO: Implement before() method.
+		if ( !UserContext::isAdmin() ) {
+			$this->response = ( new Response() )->withRedirect( '/login/' );
+		}
 	}
 }

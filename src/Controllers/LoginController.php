@@ -39,6 +39,7 @@ class LoginController implements ControllerInterface
 		$this->page = new PageGenerator();
 	}
 
+
 	/**
 	 * @param Request $request
 	 * @param Response $response
@@ -67,6 +68,11 @@ class LoginController implements ControllerInterface
 		return $response->getBody()->write( $this->page->getMarkupContent() );
 	}
 
+
+	/**
+	 * @param array $data
+	 * @throws \IB\Common\ViewsException
+	 */
 	private function drawContent( $data = [] )
 	{
 		$content =
@@ -115,6 +121,10 @@ class LoginController implements ControllerInterface
 		return false;
 	}
 
+	/**
+	 * @param UserModel $user
+	 * @return bool|null
+	 */
 	private function tryLoginAsAdmin( UserModel $user )
 	{
 		$isAdmin = false;
