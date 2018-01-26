@@ -44,6 +44,16 @@ class UserModel
 	 */
 	private $daoRow;
 
+	/**
+	 * @var int
+	 */
+	private $age;
+
+	/**
+	 * @var string
+	 */
+	private $hashPassword;
+
 
 	/**
 	 * UserModel constructor.
@@ -54,17 +64,20 @@ class UserModel
 		$this->daoRow = $daoRow;
 		$this->id = (int)$daoRow['user_id'];
 		$this->email = (string)$daoRow[ 'user_email' ];
+		$this->hashPassword = $daoRow['user_pass'];
 		$this->fullName = (string)$daoRow['user_name'];
 		$this->token = $daoRow['user_token'];
+		$this->age = (int)$daoRow['user_age'];
 		$this->isAdmin = (bool)HelperIb::JwtDecode($this->token)['user_admin'];
 	}
 
+
 	/**
-	 * @param int $id
+	 * @return int
 	 */
-	public function setId( $id )
+	public function getId()
 	{
-		$this->id = $id;
+		return $this->id;
 	}
 
 	/**
@@ -73,6 +86,14 @@ class UserModel
 	public function getEmail()
 	{
 		return $this->email;
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getHashPassword()
+	{
+		return $this->hashPassword;
 	}
 
 	/**
@@ -105,6 +126,14 @@ class UserModel
 	public function getDaoRow()
 	{
 		return $this->daoRow;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getAge()
+	{
+		return $this->age;
 	}
 
 

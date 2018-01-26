@@ -82,7 +82,7 @@ class HelperIb
 	 * @param string $hash
 	 * @return bool
 	 */
-	public static function PasswordVerify( $password, $hash )
+	public static function passwordVerify( $password, $hash )
 	{
 		return password_verify( $password, $hash );
 	}

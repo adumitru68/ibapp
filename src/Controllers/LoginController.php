@@ -9,11 +9,19 @@
 namespace IB\Controllers;
 
 
+use IB\Common\HelperIb;
+use IB\Common\SessionIb;
 use IB\Controllers\Interfaces\ControllerInterface;
 use IB\Html\HtmlDiv;
 use IB\Modules\Pages\PageGenerator;
+use IB\Modules\Users\UserContext;
+use IB\Modules\Users\UserModel;
+use IB\Modules\Users\UserService;
+use InvalidArgumentException;
+use Qpdb\SlimApplication\Utils\SlimAppConst;
 use Slim\Http\Request;
 use Slim\Http\Response;
+use UnexpectedValueException;
 
 class LoginController implements ControllerInterface
 {
@@ -36,34 +44,92 @@ class LoginController implements ControllerInterface
 	 * @param Response $response
 	 * @param array $args
 	 * @return int|Response
+	 * @throws \IB\Common\SessionIbException
 	 * @throws \IB\Common\ViewsException
+	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
-		$this->drawContent(
-			empty($request->getParsedBody()) ?[] :$request->getParsedBody()
-		);
+
+		$data = empty( $request->getParsedBody() ) ? [] : $request->getParsedBody();
+
+		if ( $request->getMethod() == SlimAppConst::METHOD_POST ) {
+			$this->tryLogin( $request->getParsedBody() );
+			$data['isError'] = true;
+		}
+
+		if ( UserContext::isUser() ) {
+			return $response->withRedirect( '/' );
+		}
+
+		$this->drawContent($data);
 
 		return $response->getBody()->write( $this->page->getMarkupContent() );
 	}
 
-	private function drawContent( $data = [])
+	private function drawContent( $data = [] )
 	{
 		$content =
 			( new HtmlDiv() )
 				->withClass( 'container' )
 				->withStyle( 'max-width', '450px' )
 				->withStyle( 'margin-top', '30px' )
-				->withViewContent( 'pages/login.php', $data )
-				->withHtmlElement(
-					( new HtmlDiv() )
-						->withId( 'result_submit' )
-						->withClass('row')
-				);
+				->withViewContent( 'pages/login.php', $data );
+
+		if(isset($data['isError']))
+			$content->withViewContent(
+				'/common/alerts.php',
+				['messageType'=>'alert-danger', 'message'=>'Inavalid user or password']
+			);
 
 		$this->page
 			->withPageTitle( 'Register page' )
 			->withContent( $content )
 			->withCssFile( '/css/custom.css' );
 	}
+
+
+	/**
+	 * @param array $data
+	 * @return bool
+	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
+	 * @throws \IB\Common\SessionIbException
+	 */
+	private function tryLogin( $data = [] )
+	{
+		/**
+		 * @var UserModel $user
+		 */
+		$user = UserService::getInstance()->getUserByEmail( $data[ 'user_email' ], true );
+
+		if ( $user && HelperIb::passwordVerify( trim( $data[ 'user_pass' ] ), $user->getHashPassword() ) ) {
+			$userSession = [
+				'userId' => $user->getId(),
+				'userEmail' => $user->getEmail(),
+				'isUser' => true,
+				'isAdmin' => $this->tryLoginAsAdmin( $user )
+			];
+			SessionIb::getInstance()->put( 'userSession', $userSession );
+		}
+
+		return false;
+	}
+
+	private function tryLoginAsAdmin( UserModel $user )
+	{
+		$isAdmin = false;
+		try {
+			$jwtArray = HelperIb::JwtDecode( $user->getToken() );
+			if ( $jwtArray[ 'user_admin' ] && $jwtArray[ 'user_id' ] == $user->getId() )
+				return true;
+		} catch ( InvalidArgumentException $e ) {
+			$isAdmin = null;
+		} catch ( UnexpectedValueException $e ) {
+			$isAdmin = null;
+		}
+
+		return $isAdmin;
+
+	}
+
 }

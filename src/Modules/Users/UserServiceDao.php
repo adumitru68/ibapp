@@ -43,9 +43,10 @@ class UserServiceDao
 	{
 		return QueryBuild::select( 'users' )
 			->fields( 'users.*, TIMESTAMPDIFF(YEAR, user_dob, CURDATE()) AS user_age' )
-			->whereEqual( 'user_id', $email )
+			->whereEqual( 'user_email', $email )
 			->first()
-			->execute();
+			->execute()
+		;
 	}
 
 	/**

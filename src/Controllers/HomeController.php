@@ -28,7 +28,10 @@ class HomeController implements ControllerInterface
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
 		$content = '<H1>Home page</H1><br><a href="/register/">Register</a>';
+		var_dump($_SESSION);
 		$response->getBody()->write( $content );
+		var_dump((bool)null);
+		var_dump((string)null);
 
 		return $response;
 	}
