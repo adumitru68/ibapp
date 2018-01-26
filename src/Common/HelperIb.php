@@ -118,5 +118,24 @@ class HelperIb
 		return false;
 	}
 
+	/**
+	 * @param $mixed
+	 * @return string
+	 */
+	public static function jsonEncode( $mixed )
+	{
+		return json_encode( $mixed, JSON_PRETTY_PRINT );
+	}
+
+	/**
+	 * @param $json
+	 * @param $asArray
+	 * @return mixed
+	 */
+	public function jsonDecode( $json, $asArray )
+	{
+		return json_decode( $json, $asArray );
+	}
+
 
 }

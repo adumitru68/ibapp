@@ -13,3 +13,10 @@ use Qpdb\SlimApplication\SlimApplicationDI;
 include_once __DIR__ . '/../vendor/autoload.php';
 
 SlimApplicationDI::routerService()->run();
+
+$result = QueryBuild::select('quiz')
+	->whereEqual('quiz_id', 1 )
+	->first()
+	->execute();
+
+//var_dump($result);

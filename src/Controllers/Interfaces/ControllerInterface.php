@@ -19,7 +19,6 @@ interface ControllerInterface
 	 * @param Request $request
 	 * @param Response $response
 	 * @param array $args
-	 * @return Response
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] );
 

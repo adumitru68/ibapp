@@ -90,7 +90,8 @@ return [
 		'name' => 'IB_7I1Z64C0KH',
 		'cookie' => [
 			'lifetime' => 0,
-			'path' => ini_get('session.cookie_path'),
+			//'path' => ini_get('session.cookie_path'),
+			'path' => '/',
 			'domain' => '.' . HelperIb::getServerName(),
 			'secure' => isset($_SERVER['HTTPS']),
 			'httponly' => true

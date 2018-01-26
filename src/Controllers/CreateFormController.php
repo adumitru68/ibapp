@@ -71,7 +71,6 @@ class CreateFormController implements ControllerInterface
 		$this->page
 			->withPageTitle( 'Register page' )
 			->withContent( $content )
-			->withCssFile( '/css/custom.css' )
-			->withJsFile( '/js/register.js' );
+			->withCssFile( '/css/custom.css' );
 	}
 }

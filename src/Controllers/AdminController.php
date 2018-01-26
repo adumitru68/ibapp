@@ -11,7 +11,6 @@ namespace IB\Controllers;
 
 use IB\Html\HtmlDiv;
 use IB\Modules\Pages\PageGenerator;
-use IB\Modules\Users\UserContext;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -57,10 +56,9 @@ class AdminController
 		;
 
 		$this->page
-			->withPageTitle( 'Register page' )
+			->withPageTitle( 'Dashboard' )
 			->withContent( $content )
-			->withCssFile( '/css/custom.css' )
-			->withJsFile( '/js/register.js' );
+			->withCssFile( '/css/custom.css' );
 	}
 
 }

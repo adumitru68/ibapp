@@ -11,5 +11,5 @@ use Qpdb\QueryBuilder\DB\DbConfig;
 use Qpdb\SlimApplication\Config\ConfigService;
 
 ConfigService::getInstance(__DIR__ . '/global.php');
-DbConfig::getInstance()->withConfigPath(__DIR__ . '/db/db_config.php');
 SessionIb::getInstance()->start();
+DbConfig::getInstance()->withConfigPath(__DIR__ . '/db/db_config.php');

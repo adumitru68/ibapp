@@ -56,7 +56,8 @@ final class SessionIb
 		if ( null === self::$instance ) {
 			self::$instance = new self();
 		}
-		if ( self::$instance->isStarted && !self::$instance->isFingerprint() ) {
+		self::$instance->start();
+		if ( !self::$instance->isFingerprint() ) {
 			self::$instance->forget();
 			throw new SessionIbException( 'Fingerprint violation', 1 );
 		}

@@ -14,10 +14,10 @@ use IB\Modules\Users\UserContext;
 	<div class="collapse navbar-collapse" id="navbarSupportedContent">
 		<ul class="navbar-nav mr-auto">
 			<li class="nav-item active">
-				<a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+				<a class="nav-link" href="/">Home<span class="sr-only">(current)</span></a>
 			</li>
 			<li class="nav-item">
-				<a class="nav-link" href="#">User Forms</a>
+				<a class="nav-link" href="#">Forms</a>
 			</li>
 
 			<?php
@@ -42,13 +42,17 @@ use IB\Modules\Users\UserContext;
 
 		<?php
 		if(\IB\Modules\Users\UserContext::isUser()){
-			echo "<a class=\"btn btn-danger btn-sm\" href=\"/logout/\" role=\"button\">Log Out</a>";
+            ?>
+            <span class="btn-sm text-secondary"><?=UserContext::userEmail()?></span>
+            <a class="btn btn-danger btn-sm float-sm-left" href="/logout/" role="button">Log Out</a>
+            <?php
 		} else {
-			echo "<a class=\"btn btn-primary btn-sm mr-2\" href=\"/login/\" role=\"button\">Login</a>";
-			echo "<a class=\"btn btn-primary btn-sm\" href=\"/register/\" role=\"button\">Sign In</a>";
+            ?>
+            <a class="btn btn-primary btn-sm mr-2" href="/login/" role="button">Login</a>
+            <a class="btn btn-primary btn-sm" href="/register/" role="button">Sign In</a>
+            <?php
 		}
 		?>
 
-<!--        <a class="btn btn-danger btn-sm" href="/logout/" role="button">Log Out</a>-->
 	</div>
 </nav>
