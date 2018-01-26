@@ -11,6 +11,7 @@ namespace IB\Controllers\Middleware;
 
 use IB\Modules\Users\UserContext;
 use Qpdb\SlimApplication\Middleware\Middleware;
+use Slim\Exception\NotFoundException;
 use Slim\Http\Response;
 
 class AdminMiddleware extends Middleware
@@ -20,6 +21,7 @@ class AdminMiddleware extends Middleware
 	{
 		if ( !UserContext::isAdmin() ) {
 			$this->response = ( new Response() )->withRedirect( '/login/' );
+			//throw new NotFoundException( $this->request, $this->response );
 		}
 	}
 }
