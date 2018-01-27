@@ -17,11 +17,13 @@ class FormsModel
 	private $name;
 	private $minAge;
 	private $id;
+	private $status;
 
 	public function __construct( array $daoRow )
 	{
 		$this->name = (string)$daoRow['form_name'];
 		$this->minAge = (int)$daoRow['form_min_age'];
+		$this->status = (int)$daoRow['form_status'];
 		$this->id = (int)$daoRow['form_id'];
 	}
 
@@ -47,6 +49,14 @@ class FormsModel
 	public function getId()
 	{
 		return $this->id;
+	}
+
+	/**
+	 * @return int
+	 */
+	public function getStatus()
+	{
+		return $this->status;
 	}
 
 }

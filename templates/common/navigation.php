@@ -30,14 +30,14 @@ use IB\Modules\Users\UserContext;
                     <div class="dropdown-menu" aria-labelledby="navbarDropdown">
                         <a class="dropdown-item" href="/admin/">Dashboard</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="/admin/new-form/">Create form</a>
-                        <a class="dropdown-item" href="/admin/forms/">View form</a>
-                        <a class="dropdown-item" href="/admin/submissions/">Submissions</a>
+                        <a class="dropdown-item" href="/admin/forms/">Forms management</a>
+                        <a class="dropdown-item" href="/admin/submissions/">User submissions</a>
                     </div>
                 </li>
                 <?php
 			}
 			?>
+
 		</ul>
 
 		<?php
