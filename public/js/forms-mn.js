@@ -16,11 +16,24 @@ var formsAdminService = ( function () {
 		});
 	}
 
+	function bindSearchEvent() {
+		$('#search_forms').keyup(function() {
+			//loadFormList(0);
+			delay(function(){
+				loadFormList(0);
+			}, 500 );
+		});
+	}
+
 	function loadFormList( selectedItem )
 	{
 		selectedItem = selectedItem || 0;
 
 		var url = "/admin/ajax/forms/list/";
+
+		var filter = $('#search_forms').val();
+		if(filter.trim().length > 0)
+			url += '?filter='+filter.trim();
 
 		$.ajax({
 			type: "GET",
@@ -35,18 +48,29 @@ var formsAdminService = ( function () {
 		'showCreateForm':showCreateForm,
 		'hideCreateForm':hideCreateForm,
 		'bindListEvents':bindListEvents,
-		'loadFormList':loadFormList
+		'loadFormList':loadFormList,
+		'bindSearchEvent':bindSearchEvent
 	}
 
+})();
+
+var delay = (function(){
+	var timer = 0;
+	return function(callback, ms){
+		clearTimeout (timer);
+		timer = setTimeout(callback, ms);
+	};
 })();
 
 $( document ).ready(function() {
 
 	formsAdminService.loadFormList();
-	formsAdminService.bindListEvents();
+	formsAdminService.bindSearchEvent();
 
 	$("#create_new_form").submit(function(e) {
+
 		var url = "/admin/ajax/forms/new/";
+
 		$.ajax({
 			type: "POST",
 			url: url,

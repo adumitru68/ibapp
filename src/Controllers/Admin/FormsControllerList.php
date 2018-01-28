@@ -41,13 +41,8 @@ class FormsControllerList implements ControllerInterface
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
-		$filter = '';
-		if ( isset($args[ 'filter' ]) )
-			$filter = $args[ 'filter' ];
 
-		$forms = FormsService::getInstance()->getFormsByFilter( $filter );
-
-		//var_dump($forms);
+		$forms = FormsService::getInstance()->getFormsByFilter( (string)$request->getParam( 'filter' ) );
 		$this->page->withContent( Views::loadView( 'common/list_of_forms.php', [ 'forms' => $forms ] ) );
 
 		return $response->getBody()->write( $this->page->getMarkupContent( false ) );
