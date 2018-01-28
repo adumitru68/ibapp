@@ -41,4 +41,19 @@ var formsAdminService = ( function () {
 
 $( document ).ready(function() {
 
+	$("#create_new_form").submit(function(e) {
+		var url = "/admin/ajax/forms/new/";
+		$.ajax({
+			type: "POST",
+			url: url,
+			data: $("#create_new_form").serialize(),
+			success: function(data) {
+				$('#result_submit').html( data );
+				//registerService.markErrors(data);
+				console.log(data);
+			}
+		});
+		e.preventDefault();
+	});
+
 });

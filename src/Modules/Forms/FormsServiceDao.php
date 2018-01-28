@@ -26,9 +26,20 @@ class FormsServiceDao
 	 */
 	public function getFormById( $formsId )
 	{
-		return QueryBuild::select('forms')
-			->whereEqual('form_id', $formsId)
+		return QueryBuild::select( 'forms' )
+			->whereEqual( 'form_id', $formsId )
 			->first()
+			->execute();
+	}
+
+	/**
+	 * @param array $insert
+	 * @return int|null
+	 */
+	public function createForm( array $insert )
+	{
+		return QueryBuild::insert( 'forms' )
+			->setFieldsByArray( $insert )
 			->execute();
 	}
 
@@ -40,10 +51,10 @@ class FormsServiceDao
 	 */
 	public function updateFormById( $formId, array $updates )
 	{
-		return QueryBuild::update('forms')
+		return QueryBuild::update( 'forms' )
 			->setFieldsByArray( $updates )
-			->whereEqual('form_id', $updates)
-			->limit(1)
+			->whereEqual( 'form_id', $updates )
+			->limit( 1 )
 			->execute();
 	}
 
@@ -52,11 +63,11 @@ class FormsServiceDao
 	 * @return int
 	 * @throws \Qpdb\QueryBuilder\Dependencies\QueryException
 	 */
-	public function deleteFormById ( $formId )
+	public function deleteFormById( $formId )
 	{
-		return QueryBuild::delete('forms')
-			->whereEqual('form_id', $formId )
-			->limit(1)
+		return QueryBuild::delete( 'forms' )
+			->whereEqual( 'form_id', $formId )
+			->limit( 1 )
 			->execute();
 	}
 

@@ -75,7 +75,6 @@ class FormsController implements ControllerInterface
 		$this->page
 			->withPageTitle( 'Forms management' )
 			->withContent( $content )
-			->withContent('aaa')
 			->withCssFile( '/css/custom.css' )
 			->withJsFile('/js/forms-mn.js')
 		;

@@ -35,6 +35,16 @@ class FormsService
 
 
 	/**
+	 * @param array $insert
+	 * @return int|null
+	 */
+	public function createForm( array $insert )
+	{
+		return FormsServiceDao::getInstance()->createForm( $insert );
+	}
+
+
+	/**
 	 * @param int $formId
 	 * @param array $updates
 	 * @return int
@@ -42,7 +52,7 @@ class FormsService
 	 */
 	public function updateFormById( $formId, array $updates )
 	{
-		return FormsServiceDao::getInstance()->updateFormById($formId, $updates);
+		return FormsServiceDao::getInstance()->updateFormById( $formId, $updates );
 	}
 
 
@@ -53,7 +63,7 @@ class FormsService
 	 */
 	public function deleteFormById( $formId )
 	{
-		return FormsServiceDao::getInstance()->deleteFormById($formId);
+		return FormsServiceDao::getInstance()->deleteFormById( $formId );
 	}
 
 
@@ -65,8 +75,8 @@ class FormsService
 	{
 		$models = [];
 		$rows = $query->execute();
-		foreach ($rows as $row)
-			$models[] = new FormsModel($row);
+		foreach ( $rows as $row )
+			$models[] = new FormsModel( $row );
 
 		return $models;
 	}
