@@ -41,8 +41,6 @@ class FormsCreateController implements ControllerInterface
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
-		var_dump($request->getParsedBody());
-		var_dump($_SESSION);
 		$this->processedForm($request->getParsedBody());
 		if ( !count( $this->formValidator->getFormErrors() ) ) {
 			$this->createForm();

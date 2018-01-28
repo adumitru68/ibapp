@@ -33,6 +33,22 @@ class FormsServiceDao
 	}
 
 	/**
+	 * @param string $filter
+	 * @return array
+	 */
+	public function getFormsByFilter( $filter = '' )
+	{
+		$filter = trim( $filter );
+		$query = QueryBuild::select( 'forms' )->orderByDesc('form_id');
+		if ( !empty( $filter ) ) {
+			$filter = '%' . $filter . '%';
+			$query->whereLike( 'form_name', $filter );
+		}
+
+		return $query->execute();
+	}
+
+	/**
 	 * @param array $insert
 	 * @return int|null
 	 */

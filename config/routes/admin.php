@@ -14,7 +14,7 @@ return function( App $app, ContainerInterface $container ) {
 
 	$app->group('/admin/ajax', function () use ($app) {
 		$app->map( [ 'GET', 'POST' ], '/forms/new/', FormsCreateController::class . ':indexAction' );
-		$app->map( [ 'GET', 'POST' ], '/forms/list/', FormsControllerList::class . ':indexAction' );
+		$app->map( [ 'GET', 'POST' ], '/forms/list/[{filter:[a-z0-9A-Z_- .]+}/]', FormsControllerList::class . ':indexAction' );
 	});
 
 	$app->add( new \Qpdb\SlimApplication\Middleware\TrailingSlash( true ) );

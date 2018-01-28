@@ -35,6 +35,26 @@ class FormsService
 
 
 	/**
+	 * @param string $filter
+	 * @param bool $asModel
+	 * @return FormsModel[]|array
+	 */
+	public function getFormsByFilter( $filter = '', $asModel = true )
+	{
+		$forms = [];
+		$rows = FormsServiceDao::getInstance()->getFormsByFilter( $filter );
+		if ( $asModel ) {
+			foreach ( $rows as $row )
+				$forms[] = new FormsModel( $row );
+
+			return $forms;
+		}
+
+		return $rows;
+	}
+
+
+	/**
 	 * @param array $insert
 	 * @return int|null
 	 */

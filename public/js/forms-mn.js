@@ -1,45 +1,49 @@
 var formsAdminService = ( function () {
 
-	function hideElement( textSelector ) {
-		$( '' + textSelector ).hide();
-	}
-
-	function showElement( textSelector ) {
-		$( '' + textSelector ).show();
-	}
-
-	function slideUpElement( textSelector ) {
-		$( '' + textSelector ).slideUp();
-	}
-
-	function slideDownElement( textSelector ) {
-		$( '' + textSelector ).slideDown();
-	}
-
 	function showCreateForm() {
-		$('#btn_show_create_form').slideUp(function () {
-			$('#create_form_box').slideDown();
-		});
+		$('#create_form_box').slideDown();
 	}
 
 	function hideCreateForm() {
-		$('#create_form_box').slideUp(function () {
-			$('#btn_show_create_form').slideDown();
+		$('#create_form_box').slideUp();
+	}
+
+	function bindListEvents() {
+		$( ".form-item" ).off('click').on( "click", function() {
+			$('#create_form_box').hide();
+			$( ".form-item" ).removeClass('selected');
+			$(this).addClass('selected');
+		});
+	}
+
+	function loadFormList( selectedItem )
+	{
+		selectedItem = selectedItem || 0;
+
+		var url = "/admin/ajax/forms/list/";
+
+		$.ajax({
+			type: "GET",
+			url: url,
+			success: function(data) {
+				$('#list_of_forms').html( data );
+			}
 		});
 	}
 
 	return {
-		'hide':hideElement,
-		'show':showElement,
-		'slideUp': slideUpElement,
-		'slideDown':slideDownElement,
 		'showCreateForm':showCreateForm,
-		'hideCreateForm':hideCreateForm
+		'hideCreateForm':hideCreateForm,
+		'bindListEvents':bindListEvents,
+		'loadFormList':loadFormList
 	}
 
 })();
 
 $( document ).ready(function() {
+
+	formsAdminService.loadFormList();
+	formsAdminService.bindListEvents();
 
 	$("#create_new_form").submit(function(e) {
 		var url = "/admin/ajax/forms/new/";

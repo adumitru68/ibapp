@@ -2,11 +2,11 @@
 ?>
 
 
-<div class="clearfix m-3">
+<div id="create_form_box" class="clearfix m-3" style="display: none;">
 
-    <button type="button" id="btn_show_create_form" class="btn btn-primary btn-lg" onclick="formsAdminService.showCreateForm()">Create form</button>
+<!--    <button type="button" id="btn_show_create_form" class="btn btn-primary btn-lg" onclick="formsAdminService.showCreateForm()">Create form</button>-->
 
-    <div class="card bg-light" id="create_form_box" style="display: none;">
+    <div class="card bg-light">
 
         <div class="card-body">
             <h5 class="card-title">Create form</h5>
