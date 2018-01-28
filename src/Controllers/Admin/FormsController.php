@@ -57,7 +57,7 @@ class FormsController implements ControllerInterface
 
 		$rightComtent = ( new HtmlDiv())
 			->withClass('col-sm-8 pl-0 ml-0')
-			->withViewContent('pages/new_form.php',[])
+			->withViewContent('common/admin_forms_right.php',[])
 		;
 
 		$content =

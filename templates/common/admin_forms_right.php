@@ -1,10 +1,7 @@
 <?php
 ?>
 
-
 <div id="create_form_box" class="clearfix m-3" style="display: none;">
-
-<!--    <button type="button" id="btn_show_create_form" class="btn btn-primary btn-lg" onclick="formsAdminService.showCreateForm()">Create form</button>-->
 
     <div class="card bg-light">
 
@@ -15,7 +12,7 @@
                 <div class="form-row align-items-center">
                     <div class="col-sm-12">
                         <label class="sr-only" for="inlineFormInput">Form name</label>
-                        <input type="text" class="form-control form-control-sm" id="form_name" name="form_name" placeholder="Form title...">
+                        <input type="text" class="form-control form-control-sm" id="form_name_new" name="form_name" placeholder="Form title...">
                         <div class="invalid-feedback">Example invalid feedback text</div>
                     </div>
                 </div>
@@ -29,6 +26,10 @@
 
     <div id="result_submit"></div>
 
+</div>
+
+<div id="edit_form_box" class="clearfix m-3">
+<!-- edit_form.php view -->
 </div>
 
 

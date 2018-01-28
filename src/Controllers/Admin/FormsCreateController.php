@@ -13,6 +13,7 @@ use IB\Controllers\Interfaces\ControllerInterface;
 use IB\Modules\Forms\FormsService;
 use IB\Modules\Validation\DataValidation;
 use IB\Modules\Validation\FormValidator;
+use Qpdb\QueryBuilder\DB\DbConnect;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -23,6 +24,11 @@ class FormsCreateController implements ControllerInterface
 	 * @var FormValidator
 	 */
 	private $formValidator;
+
+	/**
+	 * @var int
+	 */
+	private $lastId;
 
 
 	/**
@@ -41,11 +47,18 @@ class FormsCreateController implements ControllerInterface
 	 */
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
+		$responseArray = [
+			'errors' => [],
+			'lastId' => 0
+		];
 		$this->processedForm($request->getParsedBody());
 		if ( !count( $this->formValidator->getFormErrors() ) ) {
 			$this->createForm();
+			$responseArray['lastId'] = $this->lastId;
 		}
-		return ( new Response() )->withJson( $this->formValidator->getFormErrors() );
+		$responseArray['errors'] = $this->formValidator->getFormErrors();
+
+		return ( new Response() )->withJson( $responseArray );
 	}
 
 	private function processedForm( array $data )
@@ -54,13 +67,15 @@ class FormsCreateController implements ControllerInterface
 			->withFieldValidation(
 				'form_name',
 				( new DataValidation( $data[ 'form_name' ] ) )
-					->notEmpty( 'Form title is required' )
+					->notEmpty( 'Form title is required' ),
+				'form_name_new'
 			);
 	}
 
 	private function createForm()
 	{
 		FormsService::getInstance()->createForm($this->formValidator->getFormDao());
+		$this->lastId = (int)DbConnect::getInstance()->lastInsertId();
 	}
 
 }

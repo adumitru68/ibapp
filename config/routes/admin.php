@@ -1,6 +1,7 @@
 <?php
 
 use IB\Controllers\Admin\FormsController;
+use IB\Controllers\Admin\FormsControllerEdit;
 use IB\Controllers\Admin\FormsControllerList;
 use IB\Controllers\Admin\FormsCreateController;
 use IB\Controllers\AdminController;
@@ -13,9 +14,9 @@ return function( App $app, ContainerInterface $container ) {
 	$app->map( [ 'GET', 'POST' ], '/admin/forms/', FormsController::class . ':indexAction' );
 
 	$app->group('/admin/ajax', function () use ($app) {
-		$app->map( [ 'GET', 'POST' ], '/forms/new/', FormsCreateController::class . ':indexAction' );
-		$app->map( [ 'GET', 'POST' ], '/forms/list/[{filter}/]', FormsControllerList::class . ':indexAction' );
-		//$app->map( [ 'GET', 'POST' ], '/forms/list/[{filter:[a-z0-9A-Z_- .]+}/]', FormsControllerList::class . ':indexAction' );
+		$app->map( [ 'POST' ], '/forms/new/', FormsCreateController::class . ':indexAction' );
+		$app->map( [ 'GET', 'POST' ], '/forms/list/', FormsControllerList::class . ':indexAction' );
+		$app->map( [ 'GET', 'POST' ], '/forms/edit/', FormsControllerEdit::class . ':indexAction' );
 	});
 
 	$app->add( new \Qpdb\SlimApplication\Middleware\TrailingSlash( true ) );

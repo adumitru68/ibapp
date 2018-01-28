@@ -26,14 +26,21 @@ class FormValidator
 	/**
 	 * @param $varName
 	 * @param DataValidation $validation
+	 * @param null|string $id
 	 * @return $this
 	 */
-	public function withFieldValidation( $varName, DataValidation $validation )
+	public function withFieldValidation( $varName, DataValidation $validation, $id = null )
 	{
+
 		$this->daoRow[ $varName ] = $validation->getErrorsCollector()[ 0 ];
 
-		if ( !$validation->isValid() )
-			$this->errors[ $varName ] = $validation->getErrorsCollector()[ 1 ];
+		if ( !$validation->isValid() ){
+			if(empty($id))
+				$this->errors[ $varName ] = $validation->getErrorsCollector()[ 1 ];
+			else
+				$this->errors[ $id ] = $validation->getErrorsCollector()[ 1 ];
+		}
+
 
 		return $this;
 	}
