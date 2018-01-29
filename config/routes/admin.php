@@ -23,6 +23,6 @@ return function( App $app, ContainerInterface $container ) {
 
 	$app->add( new \Qpdb\SlimApplication\Middleware\TrailingSlash( true ) );
 	$app->add( \Qpdb\SlimApplication\Middleware\RouteValidation::class );
-	//$app->add( \IB\Controllers\Middleware\AdminMiddleware::class );
+	$app->add( \IB\Controllers\Middleware\AdminMiddleware::class );
 
 };

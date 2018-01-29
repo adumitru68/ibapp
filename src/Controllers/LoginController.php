@@ -54,6 +54,10 @@ class LoginController implements ControllerInterface
 
 		$data = empty( $request->getParsedBody() ) ? [] : $request->getParsedBody();
 
+		if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+			return $response->getBody()->write( 'Session expired');
+		}
+
 		if ( $request->getMethod() == SlimAppConst::METHOD_POST ) {
 			$this->tryLogin( $request->getParsedBody() );
 			$data['isError'] = true;
