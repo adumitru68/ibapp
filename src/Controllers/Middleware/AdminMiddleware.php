@@ -20,6 +20,9 @@ class AdminMiddleware extends Middleware
 	protected function before()
 	{
 		if ( !UserContext::isAdmin() ) {
+			if(!empty($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
+				die( 'Session expired');
+			}
 			$this->response = ( new Response() )->withRedirect( '/login/' );
 			//throw new NotFoundException( $this->request, $this->response );
 		}
