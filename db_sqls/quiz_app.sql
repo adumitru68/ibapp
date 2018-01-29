@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: 26 Ian 2018 la 14:05
+-- Generation Time: 29 Ian 2018 la 02:04
 -- Versiune server: 5.7.19
 -- PHP Version: 5.6.30
 
@@ -48661,7 +48661,9 @@ INSERT INTO `countries` (`id`, `sortname`, `name`, `phonecode`) VALUES
 --
 
 CREATE TABLE `forms` (
-  `form_name` varchar(150) NOT NULL DEFAULT '',
+  `form_name` varchar(255) NOT NULL DEFAULT 'Form name',
+  `form_min_age` smallint(6) NOT NULL DEFAULT '0',
+  `form_status` tinyint(4) NOT NULL DEFAULT '0',
   `form_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -48669,9 +48671,9 @@ CREATE TABLE `forms` (
 -- Salvarea datelor din tabel `forms`
 --
 
-INSERT INTO `forms` (`form_name`, `form_id`) VALUES
-('form 1', 1),
-('form 2', 2);
+INSERT INTO `forms` (`form_name`, `form_min_age`, `form_status`, `form_id`) VALUES
+('Formular sonadre opinie  despre un anumit lucru', 0, 0, 34),
+('Un alt formular', 0, 0, 35);
 
 -- --------------------------------------------------------
 
@@ -48681,11 +48683,21 @@ INSERT INTO `forms` (`form_name`, `form_id`) VALUES
 
 CREATE TABLE `quiz` (
   `quiz_question` varchar(255) NOT NULL DEFAULT '',
-  `quiz_options` varbinary(1500) NOT NULL DEFAULT '',
-  `quiz_settings` varbinary(500) NOT NULL DEFAULT '',
+  `quiz_options` varchar(2000) NOT NULL DEFAULT '',
+  `quiz_control` smallint(6) NOT NULL DEFAULT '0',
+  `quiz_ord` int(11) NOT NULL DEFAULT '99999',
   `form_id` int(11) NOT NULL DEFAULT '0',
   `quiz_id` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Salvarea datelor din tabel `quiz`
+--
+
+INSERT INTO `quiz` (`quiz_question`, `quiz_options`, `quiz_control`, `quiz_ord`, `form_id`, `quiz_id`) VALUES
+('Prima intrbabare ', '{\n    \"1\": \"Raspuns 1\",\n    \"2\": \"Raspuns 2\",\n    \"3\": \"Raspuns 3\",\n    \"4\": \"Raspuns 4\",\n    \"5\": \"Raspuns 5\"\n}', 0, 99999, 34, 14),
+('Cea de-a doua interbare', '{\n    \"1\": \"A\",\n    \"2\": \"B\",\n    \"3\": \"C\",\n    \"4\": \"D\",\n    \"5\": \"E\"\n}', 0, 99999, 34, 15),
+('Cat sunteti de multumit/nemultumit de o anumita problema ?', '{\n    \"1\": \"Foarte nemultumit\",\n    \"2\": \"Nemultumit\",\n    \"3\": \"Neutru\",\n    \"4\": \"Multumit\",\n    \"5\": \"Foarete Multumit\"\n}', 0, 99999, 35, 16);
 
 -- --------------------------------------------------------
 
@@ -52854,7 +52866,21 @@ INSERT INTO `users` (`user_email`, `user_pass`, `user_token`, `user_name`, `user
 ('adi@home.ro', '$2y$10$0T0WXHsUvcYmIKjYsEk4eeB8rZwQi4Kzh4hSrrP6UAI3rdje9kKfe', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMTkiLCJ1c2VyX2VtYWlsIjoiYWRpQGhvbWUucm8iLCJ1c2VyX2FkbWluIjowfQ.-b_-Vr0tGqQb3-LixWjHkEBDYlmlLOC2bPrqyIAlqU0', 'Adi Dumitru', 'ing it', 180, 35739, 'burebista 1', '', '1968-12-09', 19),
 ('user1@home.ro', '$2y$10$qMt0kb8QOvUr8OmoY1uZzupZRVfMY8dL1/1JjWwz9TjJFsS6N0NY.', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjAiLCJ1c2VyX2VtYWlsIjoidXNlcjFAaG9tZS5ybyIsInVzZXJfYWRtaW4iOjF9.z9HFPnstJ4NUFFTEE43rO38ZFIXd0mfVO58bEbMea5w', 'user1', 'test', 3, 6089, 'ssx', '', '1987-03-08', 20),
 ('user2@home.ro', '$2y$10$dqSpD9magoGjPSItsDBl3e76poFUXohCmNY2AtCEiW91H3IgB9RPu', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjEiLCJ1c2VyX2VtYWlsIjoidXNlcjJAaG9tZS5ybyIsInVzZXJfYWRtaW4iOjB9.l9G07hZ-6d_18Ob6d4kR98rBUTGaPvADwI02Ho215ZA', 'user2', 'test 2', 4, 6417, 'deed', '', '1974-11-06', 21),
-('user3@home.ro', '$2y$10$UhBRt40gxOQYXOQp.dF7..hpSf7RSyStrv22uU582YAPmRCzhsF/i', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjIiLCJ1c2VyX2VtYWlsIjoidXNlcjNAaG9tZS5ybyIsInVzZXJfYWRtaW4iOjB9.y7pwtOFEsUrob__4ShAb-wHeRR7d05JO0cJMJcN1M1Y', 'user 3', 'ddd', 25, 8121, 'xcvcv', 'vxcvxc', '1975-07-08', 22);
+('user3@home.ro', '$2y$10$UhBRt40gxOQYXOQp.dF7..hpSf7RSyStrv22uU582YAPmRCzhsF/i', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjIiLCJ1c2VyX2VtYWlsIjoidXNlcjNAaG9tZS5ybyIsInVzZXJfYWRtaW4iOjB9.y7pwtOFEsUrob__4ShAb-wHeRR7d05JO0cJMJcN1M1Y', 'user 3', 'ddd', 25, 8121, 'xcvcv', 'vxcvxc', '1975-07-08', 22),
+('admin@home.ro', '$2y$10$dMqhKS80noRkb4VWE3US4ePDHmrSUYym8oVxoLJMTUfiYoIGitZw.', 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJ1c2VyX2lkIjoiMjMiLCJ1c2VyX2VtYWlsIjoiYWRtaW5AaG9tZS5ybyIsInVzZXJfYWRtaW4iOjF9.FC7RIOTlFefeI6-g7rS4HOnGgCVEA3xOEKree0ZFGDo', 'admin', 'admin', 1, 5911, 'home', 'ddd', '1991-06-19', 23);
+
+-- --------------------------------------------------------
+
+--
+-- Structura de tabel pentru tabelul `users_forms`
+--
+
+CREATE TABLE `users_forms` (
+  `user_id` int(11) NOT NULL,
+  `form_id` int(11) NOT NULL,
+  `response` varchar(100) NOT NULL,
+  `response_date` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
 -- Indexes for dumped tables
@@ -52885,14 +52911,17 @@ ALTER TABLE `countries`
 -- Indexes for table `forms`
 --
 ALTER TABLE `forms`
-  ADD PRIMARY KEY (`form_id`);
+  ADD PRIMARY KEY (`form_id`),
+  ADD KEY `form_min_age` (`form_min_age`);
 
 --
 -- Indexes for table `quiz`
 --
 ALTER TABLE `quiz`
   ADD PRIMARY KEY (`quiz_id`),
-  ADD KEY `form_id` (`form_id`);
+  ADD KEY `form_id` (`form_id`),
+  ADD KEY `quiz_ord` (`quiz_ord`),
+  ADD KEY `quiz_question` (`quiz_question`);
 
 --
 -- Indexes for table `states`
@@ -52907,6 +52936,14 @@ ALTER TABLE `states`
 ALTER TABLE `users`
   ADD PRIMARY KEY (`user_id`),
   ADD UNIQUE KEY `user_email` (`user_email`);
+
+--
+-- Indexes for table `users_forms`
+--
+ALTER TABLE `users_forms`
+  ADD PRIMARY KEY (`user_id`,`form_id`),
+  ADD KEY `FK_users_forms_forms` (`form_id`),
+  ADD KEY `response_date` (`response_date`);
 
 --
 -- AUTO_INCREMENT for dumped tables
@@ -52928,19 +52965,19 @@ ALTER TABLE `cities`
 -- AUTO_INCREMENT for table `countries`
 --
 ALTER TABLE `countries`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=249;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=247;
 
 --
 -- AUTO_INCREMENT for table `forms`
 --
 ALTER TABLE `forms`
-  MODIFY `form_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `form_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `quiz`
 --
 ALTER TABLE `quiz`
-  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `quiz_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT for table `states`
@@ -52952,7 +52989,7 @@ ALTER TABLE `states`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=24;
 
 --
 -- Restrictii pentru tabele sterse
@@ -52963,6 +53000,13 @@ ALTER TABLE `users`
 --
 ALTER TABLE `quiz`
   ADD CONSTRAINT `FK_quiz_forms` FOREIGN KEY (`form_id`) REFERENCES `forms` (`form_id`) ON DELETE CASCADE;
+
+--
+-- Restrictii pentru tabele `users_forms`
+--
+ALTER TABLE `users_forms`
+  ADD CONSTRAINT `FK_users_forms_forms` FOREIGN KEY (`form_id`) REFERENCES `forms` (`form_id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `FK_users_forms_users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

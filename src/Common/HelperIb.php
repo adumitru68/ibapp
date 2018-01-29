@@ -132,7 +132,7 @@ class HelperIb
 	 * @param $asArray
 	 * @return mixed
 	 */
-	public function jsonDecode( $json, $asArray )
+	public static function jsonDecode( $json, $asArray )
 	{
 		return json_decode( $json, $asArray );
 	}

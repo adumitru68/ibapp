@@ -2,6 +2,7 @@ var formsAdminService = ( function () {
 
 	var containerEdit = $('#edit_form_box');
 	var containerAdd = $('#create_form_box');
+	var quizCounter = 0;
 
 	function showCreateForm() {
 		$('#create_new_form').trigger('reset');
@@ -90,13 +91,54 @@ var formsAdminService = ( function () {
 			loadFormEdit(lastId);
 		}
 		if(countProperties(errors)){
-			console.log(errors);
-			for (var prop in dataObject) {
+			for (var prop in errors) {
 				var el = $('#'+prop);
 				el.addClass('is-invalid');
-				el.addClass('is-invalid').parent().find('.invalid-feedback').html(dataObject[prop]);
+				el.addClass('is-invalid').parent().find('.invalid-feedback').html(errors[prop]);
 			}
 		}
+	}
+
+	function addQuestion() {
+		quizCounter++;
+		var template = $('#template_quiz').clone();
+		var question = template.find('.quiz');
+		var question_response = template.find('.quiz_response_row');
+		var destination = $('#quiz_questions_destination');
+
+		template.removeClass('no_quiz_display');
+		template.removeAttr('id');
+
+		$(question).find('input').attr('name','quiz_options_new[_'+quizCounter+'][q]');
+
+		question_response.find('input').each(function (index, input) {
+			jQuery(input).attr('name', 'quiz_options_new[_'+quizCounter+'][r][' + (index+1) + ']');
+		});
+
+		question.show();
+		question_response.show();
+		destination.append(template);
+	}
+
+	function deleteQuestion( button ) {
+		$(button).closest('.quiz_item').remove();
+	}
+
+	function bindEditForm() {
+		$("#edit_form").submit(function(e) {
+			var url = "/admin/ajax/forms/edit/process/";
+			$.ajax({
+				type: "PUT",
+				url: url,
+				data: $("#edit_form").serialize(),
+				success: function(data) {
+					$('#result_edit_process').html( data );
+					hideEditForm();
+				}
+			});
+			e.preventDefault();
+
+		});
 	}
 
 	function countProperties(obj) {
@@ -114,7 +156,10 @@ var formsAdminService = ( function () {
 		'bindListEvents':bindListEvents,
 		'loadFormList':loadFormList,
 		'bindSearchEvent':bindSearchEvent,
-		'afterCreateForm':afterCreateForm
+		'afterCreateForm':afterCreateForm,
+		'addQuestion':addQuestion,
+		'deleteQuestion':deleteQuestion,
+		'bindEditForm':bindEditForm
 	}
 
 })();

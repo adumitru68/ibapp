@@ -14,6 +14,7 @@ use IB\Controllers\Interfaces\ControllerInterface;
 use IB\Modules\Forms\FormsService;
 use IB\Modules\Forms\FormsServiceDao;
 use IB\Modules\Pages\PageGenerator;
+use Qpdb\QueryBuilder\QueryBuild;
 use Slim\Http\Request;
 use Slim\Http\Response;
 
@@ -24,6 +25,8 @@ class FormsControllerEdit implements ControllerInterface
 	 * @var PageGenerator
 	 */
 	private $page;
+
+	private $quiz_options;
 
 	/**
 	 * RegisterController constructor.
@@ -43,8 +46,12 @@ class FormsControllerEdit implements ControllerInterface
 	public function indexAction( Request $request, Response $response, array $args = [] )
 	{
 		$dao = FormsServiceDao::getInstance()->getFormById( $request->getParam('form_id') );
-		$this->page->withContent( Views::loadView( 'common/edit_form.php', [ 'dao' => $dao ] ) );
+		$rows = QueryBuild::select('quiz')
+			->whereEqual('form_id', $request->getParam('form_id') )
+			->execute();
+		$this->page->withContent( Views::loadView( 'common/edit_form.php', [ 'dao' => $dao, 'quizRows'=>$rows ] ) );
 
 		return $response->getBody()->write( $this->page->getMarkupContent( false ) );
 	}
+
 }

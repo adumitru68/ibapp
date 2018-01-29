@@ -33,3 +33,7 @@
 	background-color: #f5f5f5;
 }
 
+.no_quiz_display{
+	display: none;
+}
+

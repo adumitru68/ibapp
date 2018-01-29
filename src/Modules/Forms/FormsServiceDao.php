@@ -69,7 +69,7 @@ class FormsServiceDao
 	{
 		return QueryBuild::update( 'forms' )
 			->setFieldsByArray( $updates )
-			->whereEqual( 'form_id', $updates )
+			->whereEqual( 'form_id', $formId )
 			->limit( 1 )
 			->execute();
 	}
