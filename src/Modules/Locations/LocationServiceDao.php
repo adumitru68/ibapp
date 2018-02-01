@@ -44,10 +44,6 @@ class LocationServiceDao
 				WHERE countries.id=?";
 		return DbService::getInstance()->query( $sql, [ $countryId ] );*/
 
-		/**
-		 * Fiind un test am pus si query-ul. Pt query-uri am creat un builder ce este public pe github.com
-		 */
-
 		return QueryBuild::select( 'cities' )
 			->fields('cities.id, cities.name AS text')
 			->innerJoin( 'states', 'cities.state_id', 'states.id' )
